@@ -1,5 +1,4 @@
-﻿using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Wordprocessing;
+﻿using DocumentFormat.OpenXml.Wordprocessing;
 
 public class DokumentiRedaktor
 {
@@ -19,14 +18,14 @@ public class DokumentiRedaktor
         try
         {
             var paragraafid = dok.Elements<Paragraph>().ToList();
-            int pealkirjaIndeks = LeiaPealkirjaIndeks(paragraafid, loiguPealkiri);
+            int pealkirjaIndeks = DocxTooristad.LeiaPealkirjaIndeks(paragraafid, loiguPealkiri);
 
             if (pealkirjaIndeks == -1)
             {
                 throw new ArgumentException($"Pealkiri '{loiguPealkiri}' ei eksisteeri");
             }
 
-            int paragraafiIndeks = LeiaParagraafiIndeks(paragraafid, pealkirjaIndeks + 1);
+            int paragraafiIndeks = DocxTooristad.LeiaParagraafiIndeks(paragraafid, pealkirjaIndeks + 1);
 
             if (paragraafiIndeks == -1)
             {
@@ -34,7 +33,7 @@ public class DokumentiRedaktor
             }
             else
             {
-                var uusParagraaf = LooUusParagraaf(uusTekst);
+                var uusParagraaf = DocxTooristad.LooUusParagraaf(uusTekst);
                 dok.ReplaceChild(uusParagraaf, paragraafid[paragraafiIndeks]);
 
             }
@@ -45,63 +44,5 @@ public class DokumentiRedaktor
         }
     }
 
-    private static int LeiaPealkirjaIndeks(List<Paragraph> p, string pealkiri)
-    {
-        for (int i = 0; i < p.Count; i++)
-        {
-            var text = LeiaTekst(p[i]);
-            if (text.Equals(pealkiri, StringComparison.OrdinalIgnoreCase))
-            {
-                return i;
-            }
-        }
-        return -1;
-    }
 
-    private static int LeiaParagraafiIndeks(List<Paragraph> p, int indeks)
-    {
-        for (int i = indeks; i < p.Count; i++)
-        {
-            var text = LeiaTekst(p[i]);
-            if (!string.IsNullOrWhiteSpace(text))
-            {
-                var pPr = p[i].ParagraphProperties;
-                if (pPr?.ParagraphStyleId == null)
-                {
-                    return i;
-                }
-            }
-        }
-        return -1;
-    }
-
-    private static string LeiaTekst(Paragraph p)
-    {
-        return string.Join(
-            "",
-            p
-            .Elements<Run>()
-            .SelectMany(run => run.Elements<Text>())
-            .Select(text => text.Text)
-        );
-    }
-
-    private static Paragraph LooUusParagraaf(string t)
-    {
-        RunProperties omadused = new RunProperties(
-            new RunFonts()
-            {
-                Ascii = "Arial",
-                HighAnsi = "Arial",
-                ComplexScript = "Arial"
-            }
-        );
-
-        return new Paragraph(
-            new Run(
-                omadused,
-                new Text(t) { Space = SpaceProcessingModeValues.Preserve }
-            )
-        );
-    }
 }

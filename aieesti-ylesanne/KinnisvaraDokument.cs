@@ -6,7 +6,7 @@ public class KinnisvaraDokument
     public string Kokkuvote { get; private set; } = string.Empty;
     public string MakromajanduslikTaust { get; private set; } = string.Empty;
     public string EestiKinnisvaraturg { get; private set; } = string.Empty;
-    public string Linnaosa { get; private set; } = string.Empty;
+    public string PiirkondlikYlevaade { get; private set; } = string.Empty;
     public string Turuvaartus { get; private set; } = string.Empty;
 
     public KinnisvaraDokument(Body b)
@@ -37,8 +37,8 @@ public class KinnisvaraDokument
                 "Eesti kinnisvaraturg",
                 value => EestiKinnisvaraturg = value?.Trim() ?? string.Empty
             },
-            { "Kristiine linnaosa korteriturg", value => Linnaosa = value?.Trim() ?? string.Empty },
-            { "Õismäe linnaosa korteriturg", value => Linnaosa = value?.Trim() ?? string.Empty },
+            { "Kristiine linnaosa korteriturg", value => PiirkondlikYlevaade = value?.Trim() ?? string.Empty },
+            { "Õismäe linnaosa korteriturg", value => PiirkondlikYlevaade = value?.Trim() ?? string.Empty },
             { "Turuväärtus:", value => Turuvaartus = value?.Trim() ?? string.Empty }
         };
 
@@ -49,7 +49,7 @@ public class KinnisvaraDokument
 
             foreach (var p in b.Elements<Paragraph>())
             {
-                var text = LeiaTekst(p);
+                var text = DocxTooristad.LeiaTekst(p);
 
                 if (string.IsNullOrWhiteSpace(text))
                     continue;
@@ -93,24 +93,6 @@ public class KinnisvaraDokument
                     ex
                 );
             }
-        }
-    }
-
-    private string LeiaTekst(Paragraph p)
-    {
-        try
-        {
-            return string.Join(
-                "",
-                p
-                    .Elements<Run>()
-                    .SelectMany(run => run.Elements<Text>())
-                    .Select(text => text.Text)
-            );
-        }
-        catch (Exception ex)
-        {
-            throw new Exception("Viga teksti extractimisel", ex);
         }
     }
 
