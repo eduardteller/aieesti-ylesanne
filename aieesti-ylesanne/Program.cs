@@ -86,7 +86,7 @@ try
 
         if (!vordne)
         {
-            Console.WriteLine("Kinnisvaraturu andmed on uuendatud!");
+            Console.WriteLine("Hindamisfaili Kinnisvaraturu andmed on uuendatud!");
             Console.WriteLine($"{nimi} <- {andmebaas.teadmistebaasiFailideNimed[0]}\n");
             DokumentiRedaktor.UuendaDokumentiAndmed(
                 b,
@@ -107,7 +107,7 @@ try
 
         if (!vordne)
         {
-            Console.WriteLine("Makromajandusliku tausta andmed on uuendatud!");
+            Console.WriteLine("Hindamisfaili Makromajandusliku tausta andmed on uuendatud!");
             Console.WriteLine($"{nimi} <- {andmebaas.teadmistebaasiFailideNimed[1]}\n");
             DokumentiRedaktor.UuendaDokumentiAndmed(
                 b,
@@ -136,7 +136,7 @@ try
                 throw new Exception("Tundmatu linnaosa");
             }
 
-            Console.WriteLine($"{lok} linnaosa korterituru tausta andmed on uuendatud!");
+            Console.WriteLine($"Hindamisfaili {lok} linnaosa korterituru tausta andmed on uuendatud!");
             Console.WriteLine($"{nimi} <- {andmebaas.teadmistebaasiFailideNimed[2]}\n");
 
             DokumentiRedaktor.UuendaDokumentiAndmed(
@@ -158,7 +158,7 @@ try
         // Salvestan muudetud dokumendi
         wordDoc.MainDocumentPart.Document.Save();
 
-        Console.WriteLine("\n" + "Dokument on salvestatud!");
+        Console.WriteLine("Dokument on salvestatud!");
     }
 
 }
