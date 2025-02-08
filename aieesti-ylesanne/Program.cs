@@ -20,13 +20,14 @@ try
 {
     using (var wordDoc = WordprocessingDocument.Open(filePath, true))
     {
+        var eesti = new CultureInfo("et-EE");
         Body b = wordDoc.MainDocumentPart.Document.Body;
+
         KinnisvaraDokument dok = new KinnisvaraDokument(b);
 
         var location = dok.LeiaAsukoht();
         Teadmistebaas andmebaas = new Teadmistebaas(location);
 
-        var eesti = new CultureInfo("et-EE");
         int loendur = 0;
         bool vordne = string.Compare(
             andmebaas.EestiKinnisvaraturg,
