@@ -65,6 +65,8 @@ try
                 );
 
                 Console.WriteLine($"{andmebaas.teadmistebaasiFailideNimed[2]} <- {nimi}\n");
+
+                andmebaas = new Teadmistebaas(dok.LeiaAsukoht());
             }
         }
         else
